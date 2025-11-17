@@ -1,0 +1,40 @@
+{% extends 'aplicatie/baza.html' %}
+{% load static %}
+
+{% block titlu %}Profil - {{ user.username }}{% endblock %}
+
+{% block continut %}
+<section class="profil-section">
+    <h2>Profil Utilizator</h2>
+    <table class="profil-table">
+        <tr>
+            <th>Nume utilizator</th>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th>Telefon</th>
+            <td>{{ user.telefon|default:"" }}</td>
+        </tr>
+        <tr>
+            <th>Data nașterii</th>
+            <td>{% if user.data_nasterii %}{{ user.data_nasterii|date:"Y-m-d" }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Adresa livrare</th>
+            <td>{{ user.adresa_livrare|default:"" }}</td>
+        </tr>
+        <tr>
+            <th>Abonat newsletter</th>
+            <td>{% if user.abonat_newsletter %}Da{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Data înregistrare</th>
+            <td>{% if user.data_inregistrare %}{{ user.data_inregistrare|date:"Y-m-d H:i" }}{% endif %}</td>
+        </tr>
+    </table>
+</section>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'aplicatie/baza.html' %}
+{% load static %}
+
+{% block titlu %}{{ produs.nume }}{% endblock %}
+
+{% block continut %}
+
+<section class="sectiune sectiune-detalii-produs">
+    <div class="produs-container">
+        {% if produs.imagine %}
+        <div class="produs-imagine">
+            <img src="{{ produs.imagine.url }}" alt="{{ produs.nume }}">
+        </div>
+        {% endif %}
+
+        <div class="produs-info">
+            <h1>{{ produs.nume }}</h1>
+            <p class="pret">Pret: {{ produs.pret }} RON</p>
+            <p class="categorie">
+                <span class="eticheta">Categorie:</span>
+                {% if produs.categorie.icon %}
+                    <img src="{{ produs.categorie.icon.url }}" alt="{{ produs.categorie.nume }}">
+                {% endif %}
+                <a href="{% url 'categorie' produs.categorie.nume %}">
+                    {{ produs.categorie.nume }}
+                </a>
+            </p>
+            <div class="marimi-disponibile">
+                <p>Marimi disponibile:</p>
+                <ul>
+                    {% for marime in produs.marimi.all %}
+                    <li>{{ marime.nume }}</li>
+                    {% empty %}
+                    <li>Nu sunt marimi disponibile</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

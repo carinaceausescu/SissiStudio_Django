@@ -1,0 +1,28 @@
+{% extends 'aplicatie/baza.html' %}
+{% load static %}
+
+{% block titlu %}Despre{% endblock %}
+
+{% block continut %}
+
+<section class="sectiune sectiune-despre">
+    <h2>Despre Sissi Studio</h2>
+    <p>Sissi Studio este un brand dedicat pasionatilor de moda, oferind haine cu personalitate si stil. Fiecare piesa este atent selectionata pentru a satisface cele mai exigente gusturi.</p>
+    <p>Ne mandrim cu calitatea materialelor folosite si cu atentia la detalii, asigurandu-ne ca fiecare client se simte special.</p>
+</section>
+
+<section id="echipa" class="sectiune sectiune-echipa">
+    <div class="echipa-grid">
+        <div class="echipa-text">
+            <h2>Echipa Sissi Studio</h2>
+            <p>Sissi Studio s-a nascut din pasiunea noastra pentru haine cu stil si pentru pisici.</p>
+            <p>Mascota noastra, Sissi, ne inspira in fiecare zi si ne ajuta sa aducem un strop de veselie in colectiile noastre.</p>
+            <p>Fiecare produs este selectat cu grija, combinand designul modern cu confortul si personalitatea pieselor.</p>
+        </div>
+        <div class="echipa-img">
+            <img src="{% static 'imagini/pisica_mascota.jpeg' %}" alt="Pisica mascot Sissi Studio">
+        </div>
+    </div>
+</section>
+
+{% endblock %}

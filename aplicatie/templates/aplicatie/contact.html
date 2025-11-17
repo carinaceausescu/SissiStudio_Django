@@ -1,0 +1,12 @@
+{% extends 'aplicatie/baza.html' %}
+{% load static %}
+
+{% block titlu %}Produse{% endblock %}
+
+{% block continut %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Trimite</button>
+    </form>
+{% endblock %}

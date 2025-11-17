@@ -1,0 +1,27 @@
+{% extends 'aplicatie/baza.html' %}
+{% load static %}
+
+{% block titlu %}Login{% endblock %}
+{% block continut %}
+<section class="formular-login">
+    <h2>Pagina login</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div>
+            {{ form.username.label_tag }} {{ form.username }}
+            {{ form.username.errors }}
+        </div>
+        <div>
+            {{ form.password.label_tag }} {{ form.password }}
+            {{ form.password.errors }}
+        </div>
+        <div>
+            {{ form.ramane_logat.label_tag }} {{ form.ramane_logat }}
+            {{ form.ramane_logat.errors }}
+        </div>
+        <button type="submit">Login</button>
+    </form>
+    <p><a href="{% url 'inregistrare' %}">Nu ai cont? Inregistreaza-te aici.</a></p>
+</section>
+{% endblock %}

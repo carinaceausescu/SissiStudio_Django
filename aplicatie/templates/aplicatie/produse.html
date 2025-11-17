@@ -1,0 +1,118 @@
+
+{% extends 'aplicatie/baza.html' %}
+{% load static %}
+
+{% block titlu %}Produse{% endblock %}
+
+{% block continut %}
+    
+    <aside class="filtru-produse">
+        <h3>Filtreaza produsele</h3>
+        <form id="filterForm" method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <div>
+                {{ form.pret_minim.label_tag }}
+                {{ form.pret_minim }}
+                {{ form.pret_minim.errors }}
+            </div>
+
+            <div>
+                {{ form.pret_maxim.label_tag }}
+                {{ form.pret_maxim }}
+                {{ form.pret_maxim.errors }}
+            </div>
+
+            <div>
+                {% if not categorie %}
+                    {{ form.categorie.label_tag }}
+                {% endif %}
+                {{ form.categorie }}
+                {{ form.categorie.errors }}
+            </div>
+
+            <div>
+                    {{ form.marime.label_tag }}
+                    {{ form.marime }}
+                    {{ form.marime.errors }}
+            </div>
+
+            <div>
+                {{ form.items_per_page.label_tag }}
+                {{ form.items_per_page }}
+                {{ form.items_per_page.errors }}
+            </div>
+
+            <button type="submit">Aplica filtre</button>
+            <button type="button" id="resetButton">Reseteaza filtrele</button>
+        </form>
+
+    </aside>
+
+    <main class="sectiune sectiune-produse" id="produseList">
+        {% if categorie %}
+            <h2>
+                {% if categorie.icon %}
+                    <span class="categorie-icon">
+                        <img src="{{categorie.icon.url }}" alt="{{ categorie.nume }}">
+                    </span>
+                {% endif %}
+                {{categorie.nume }}
+            </h2>
+        {% else %}
+            <h2>Colectia Sissi Studio</h2>
+        {% endif %}
+        <div id="produseItems">
+        {% for produs in pagina %}
+            <div class="produs-card">
+                {% if produs.imagine %}
+                    <img src="{{ produs.imagine.url }}" alt="{{ produs.nume }}">
+                {% endif %}
+                <div class ="produs-detalii">
+                    <h3 class="nume">
+                        <a href="{% url 'detalii_produs' produs.id %}">{{ produs.nume }}</a>
+                    </h3>
+                    <p class="pret">Pret: {{ produs.pret }} RON</p>
+                    <p class="categorie">
+                        <a href="{% url 'categorie' produs.categorie.nume %}">
+                            {% if produs.categorie.icon %}
+                                <img src="{{ produs.categorie.icon.url }}" alt="{{ produs.categorie.nume }}" class="categorie-icon">
+                            {% endif %}
+                            {{ produs.categorie.nume }}
+                        </a>
+                    </p>
+                </div>
+            </div>
+        {% empty%}
+            <p>Nu exista produse disponibile.</p>
+        {% endfor %}
+        </div>
+
+        <div class="paginare">
+            {% if pagina %}
+                {% if pagina.has_previous %}
+                    <a href="?pagina={{ pagina.previous_page_number }}" data-page="{{ pagina.previous_page_number }}">Inapoi</a>
+                {% endif %}
+
+                <span>Pagina {{ pagina.number }} din {{ pagina.paginator.num_pages }}</span>
+
+                {% if pagina.has_next %}
+                    <a href="?pagina={{ pagina.next_page_number }}" data-page="{{ pagina.next_page_number }}">Inainte</a>
+                {% endif %}
+            {% else %}
+                <span>Nu exista paginare</span>
+            {% endif %}
+        </div>
+    </main>
+
+    <script>
+        const URL_FILTRARE = "{% url 'produse' %}";
+        const CSRF_TOKEN = "{{ csrf_token }}";
+        const categorie_url_param = {{ categorie.id|default:'null' }};
+    </script>
+    <script src="{% static 'JS/script.js' %}"></script>
+
+{% endblock %}
+
+

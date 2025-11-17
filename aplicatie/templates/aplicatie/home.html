@@ -1,0 +1,68 @@
+{% extends 'aplicatie/baza.html' %}
+{% load static %}
+
+{% block titlu %}Sissi Studio{% endblock %}
+
+{% block continut %}
+
+<section id="recomandari" class="sectiune sectiune-recomandari">
+    <h2>Recomandări</h2>
+    <p>Descoperă produsele noastre favorite.</p>
+
+    <div class="prod-grid">
+        {% for articol in recomandari %}
+            <article class="prod-card">
+                {% if articol.imagine %}
+                    <img src="{{ articol.imagine.url }}" alt="{{ articol.nume }}">
+                {% else %}
+                    <img src="{% static 'imagini/no-image.png' %}" alt="Fără imagine">
+                {% endif %}
+                <h3>{{ articol.nume }}</h3>
+                <p class="pret">{{ articol.pret }} RON</p>
+                <p>
+                    <a class="buton" href="{% url 'detalii_produs' articol.id %}">Vezi detalii</a>
+                </p>
+            </article>
+        {% empty %}
+            <p>Nu există articole recomandate momentan.</p>
+        {% endfor %}
+    </div>
+
+    <div class="toate-produsele">
+        <a class="buton buton-secondary" href="{% url 'produse' %}">Vezi toate produsele</a>
+    </div>
+</section>
+
+
+<section id="despre" class="sectiune sectiune-poveste">
+    <h2>Povestea noastra</h2>
+    <div class="poveste-grid">
+        <div class="poveste-text">
+            <p>
+                Sissi Studio s-a nascut din pasiune pentru haine cu personalitate.
+            Lucram cu atentie la detalii si selectam piese care se potrivesc stilului tau.
+            Fiecare colectie este gandita sa ofere confort, eleganta si versatilitate.
+            </p>
+            <p><a class="buton" href="{% url 'despre' %}">Vezi mai multe</a></p>
+        </div>
+        <div class="poveste-img">
+            <img src="{% static 'imagini/poza1.jpeg' %}" alt="poza despre noi">
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="sectiune sectiune-contact">
+    <h2>Contact</h2>
+    <p>Doresti informatii sau comenzi personalizate?</p>
+    <p> Ne gasesti aici:</p>
+
+    <ul class="contact-list">
+        <li><strong>Adresa:</strong> Str. Iuliu Maniu 12, Bucuresti</li>
+        <li><strong>Telefon:</strong> 0727 125 030</li>
+        <li><strong>Email:</strong> contact@sissistudio.ro</li>
+    </ul>
+
+    <p><a class="buton" href="{% url 'contact' %}">Pagina completa de contact</a></p>
+</section>
+
+{% endblock %}

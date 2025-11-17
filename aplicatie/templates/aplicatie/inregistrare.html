@@ -1,0 +1,48 @@
+{% extends 'aplicatie/baza.html' %}
+{% load static %}
+
+{% block titlu %}Inregistrare{% endblock %}
+
+{% block continut %}
+<section class="formular-inregistrare">
+    <h2>Inregistrare Utilizator</h2>
+    <form method="post" action="{% url 'inregistrare' %}">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div>
+            {{ form.username.label_tag }} {{ form.username }}
+            {{ form.username.errors }}
+        </div>
+        <div>
+            {{ form.email.label_tag }} {{ form.email }}
+            {{ form.email.errors }}
+        </div>
+        <div>
+            {{ form.telefon.label_tag }} {{ form.telefon }}
+            {{ form.telefon.errors }}
+        </div>
+        <div>
+            {{ form.data_nasterii.label_tag }} {{ form.data_nasterii }}
+            {{ form.data_nasterii.errors }}
+        </div>
+        <div> 
+            {{ form.adresa_livrare.label_tag }} {{ form.adresa_livrare }}
+            {{ form.adresa_livrare.errors }}
+        </div>
+        <div>
+            {{ form.abonat_newsletter.label_tag }} {{ form.abonat_newsletter }}
+            {{ form.abonat_newsletter.errors }}
+        </div>
+        <div>
+            {{ form.password1.label_tag }} {{ form.password1 }}
+            {{ form.password1.errors }}
+        </div>
+        <div>
+            {{ form.password2.label_tag }} {{ form.password2 }}
+            {{ form.password2.errors }}
+        </div>
+
+        <button type="submit">Inregistreaza-te</button>
+    </form>
+</section>
+{% endblock %}

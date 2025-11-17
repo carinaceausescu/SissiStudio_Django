@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block titlu %}Sissi Studio{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/stil.css' %}">
+</head>
+<body>
+    <header>
+        <div class="bara_logo">
+            <img src="{% static 'imagini/logo.jpeg' %}" alt="Logo Sissi Studio">
+            <h1>Sissi Studio</h1>
+        </div>
+        <nav>
+            <ul class="menu">
+                <li><a href="{% url 'home' %}">HOME</a>
+                    <ul class="dropdown">
+                        <li><a href="{% url 'home' %}#recomandari">Recomandari</a></li>
+                        <li><a href="{% url 'home' %}#despre">Povestea noastra</a></li>
+                        <li><a href="{% url 'home' %}#contact">Contact</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="{% url 'despre' %}">DESPRE</a>
+                    <ul class="dropdown">
+                        <li><a href="{% url 'despre' %}#despremagazin">Despre magazin</a></li>
+                        <li><a href="{% url 'despre' %}#echipa">Echipa noastra</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="{% url 'produse' %}">PRODUSE</a></li>
+                <li><a href="">CATEGORII</a>
+                    <ul class="dropdown">
+                        {% for categorie in categorii %}
+                        <li><a href="{% url 'categorie' categorie.nume %}">{{ categorie.nume }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li><a href="{% url 'cos_virtual' %}">CART</a></li>
+                <li><a href="{% url 'contact' %}">CONTACT</a></li>
+                <li><a href="{% url 'log' %}">LOG</a></li>
+                <li><a href="{% url 'info' %}">INFO</a></li>
+                <!--{% if request.user.is_authenticated %}
+                    <li><a href="{% url 'profil' %}">PROFIL ({{ request.user.username }})</a></li>
+                    <li><a href="{% url 'logout' %}">DECONECTARE</a></li>
+                {% else %}
+                    
+                {% endif %} -->
+            </ul>
+        </nav>
+    </header>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <main>
+        {% block continut %}
+            {% if continut_custom %}
+                {{ continut_custom|safe }}
+            {% endif %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>IP utilizator: {{ request.META.REMOTE_ADDR }}</p>
+    </footer>
+</body>
+</html>
