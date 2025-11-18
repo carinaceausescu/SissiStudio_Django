@@ -2,14 +2,13 @@ from django.shortcuts import render, redirect
 import datetime
 from urllib.parse import urlparse
 from django.http import HttpResponse, JsonResponse
-from .forms import FilterFormArticole
+from .forms import FilterFormArticole, ContactForm
 from .models import Articol, Categorie
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django import forms
 from django.urls import reverse
 #from django.contrib.auth import authenticate, login
 #from .forms import LoginForm
-#from .forms import ContactForm
 
 
 lista_accesari = []
@@ -329,6 +328,7 @@ def produse(request, categorie_nume=None):
             })
 
         else:
+            print("ERORI FORMULAR:", form.errors)
             return JsonResponse({"status": "error", "message": "Formular invalid"})
 
     sort = request.GET.get("sort", "nume") 
@@ -400,29 +400,35 @@ def categorie(request, categorie_nume):
         'categorie_url_param': cat.id,
     })
 
-"""
+
 def contact(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
-            data = form.procesare_date()
-            nume = data.get('nume')
-            mesaj = data.get('mesaj')
-            urgent = data.get('urgent')
-            varsta = data.get('varsta')
-
-            nume_fisier = f"{nume}_urgent.txt" if urgent else f"{nume}.txt"
-
-            with open(nume_fisier, "w", encoding="utf-8") as f:
-                f.write(f"Nume: {nume}\n")
-                f.write(f"Varsta: {varsta}\n")
-                f.write(f"Mesaj: {mesaj}\n")
-
-            return render(request, 'contact_succes.html', {'nume': nume})
+            nume = form.cleaned_data["nume"]
+            prenume = form.cleaned_data["prenume"]
+            cnp = form.cleaned_data["cnp"]
+            data_nasterii = form.cleaned_data["data_nasterii"]
+            email = form.cleaned_data["email"]
+            email_confirmare = form.cleaned_data["email_confirmare"]
+            tip_mesaj = form.cleaned_data["tip_mesaj"]
+            subiect = form.cleaned_data["subiect"]
+            minim_zile_astepatare = form.cleaned_data["minim_zile_asteptare"]
+            mesaj = form.cleaned_data["mesaj"]
+        
+            return render(request, "aplicatie/contact.html", {
+                "form": ContactForm(),
+                "success": "Mesajul a fost trimis."
+            })
+        else:
+            return render(request, "aplicatie/contact.html", {
+                "form": form
+            })
     else:
         form = ContactForm()
-    return render(request, 'contact.html', {'form': form})
-"""
+
+    return render(request, "aplicatie/contact.html", {"form": form})
+
 
 def cos_virtual(request):
     return render(request, 'aplicatie/cos_virtual.html')

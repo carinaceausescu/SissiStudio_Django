@@ -104,7 +104,7 @@ footer {
 
 .sectiune h2 {
     font-size: 2rem;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
     letter-spacing: 1px;
 }
 
@@ -543,4 +543,75 @@ footer {
 
 .sectiune-detalii-produs .categorie a:hover {
     color: #000; 
+}
+
+.titlu-contact {
+    display: flex;
+    justify-content: center; 
+    align-items: center;        
+    font-size: 50px;
+    margin: 20px 0;       
+}
+
+
+form.generic-form {
+    max-width: 500px;          
+    margin: 50px auto;          
+    padding: 30px;              
+    border: 2px solid rgb(223, 178, 197);     
+    border-radius: 15px;        
+    background-color: rgb(255, 255, 255);  
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-size: 1.1rem;          
+}
+
+form.generic-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+form.generic-form input[type="text"],
+form.generic-form input[type="email"],
+form.generic-form input[type="number"],
+form.generic-form input[type="date"],
+form.generic-form select,
+form.generic-form textarea {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 15px;
+    border: 1px solid rgb(223, 178, 197);
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+form.generic-form button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(255, 77, 151);
+    color: white;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Girly Signature';
+}
+
+form.generic-form button[type="submit"]:hover {
+    background-color: rgb(255, 157, 198);
+}
+
+form.generic-form .errorlist {
+    color: rgb(255, 63, 143);
+    margin-bottom: 10px;
+    list-style-type: none;
+    padding-left: 0;
+    font-size: 0.95rem;
+}
+
+form.generic-form textarea {
+    min-height: 100px;
+    resize: vertical;
 }

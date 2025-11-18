@@ -4,9 +4,65 @@
 {% block titlu %}Produse{% endblock %}
 
 {% block continut %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
+    <h2 class="titlu-contact">Contact </h2>
+
+    {% if success %}
+        <p>{{ success }}</p>
+    {% endif %}
+
+    <form method="post" class="generic-form">
+            {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div>
+            {{ form.nume.label_tag }}<br>
+            {{ form.nume }}
+            {{ form.nume.errors }}
+        </div>
+        <div>
+            {{ form.prenume.label_tag }}<br>
+            {{ form.prenume }}
+            {{ form.prenume.errors }}
+        </div>
+        <div>
+            {{ form.cnp.label_tag }}<br>
+            {{ form.cnp }}
+            {{ form.cnp.errors }}
+        </div>
+        <div>
+            {{ form.data_nasterii.label_tag }}<br>
+            {{ form.data_nasterii }}
+            {{ form.data_nasterii.errors }}
+        </div>
+        <div>
+            {{ form.email.label_tag }}<br>
+            {{ form.email }}
+            {{ form.email.errors }}
+        </div>
+        <div>
+            {{ form.email_confirmare.label_tag }}<br>
+            {{ form.email_confirmare }}
+            {{ form.email_confirmare.errors }}
+        </div>
+        <div>
+            {{ form.tip_mesaj.label_tag }}<br>
+            {{ form.tip_mesaj }}
+            {{ form.tip_mesaj.errors }}
+        </div>
+        <div>
+            {{ form.subiect.label_tag }}<br>
+            {{ form.subiect }}
+            {{ form.subiect.errors }}
+        </div>
+        <div>
+            {{ form.minim_zile_asteptare.label_tag }}<br>
+            {{ form.minim_zile_asteptare }}
+            {{ form.minim_zile_asteptare.errors }}
+        </div>
+        <div>
+            {{ form.mesaj.label_tag }}<br>
+            {{ form.mesaj }}
+            {{ form.mesaj.errors }}
+        </div>
         <button type="submit">Trimite</button>
     </form>
 {% endblock %}
