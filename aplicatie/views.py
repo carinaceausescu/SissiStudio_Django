@@ -7,6 +7,10 @@ from .models import Articol, Categorie
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django import forms
 from django.urls import reverse
+import json
+import os
+import time
+from django.conf import settings
 #from django.contrib.auth import authenticate, login
 #from .forms import LoginForm
 
@@ -415,6 +419,7 @@ def contact(request):
             subiect = form.cleaned_data["subiect"]
             minim_zile_astepatare = form.cleaned_data["minim_zile_asteptare"]
             mesaj = form.cleaned_data["mesaj"]
+            
         
             return render(request, "aplicatie/contact.html", {
                 "form": ContactForm(),
