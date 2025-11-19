@@ -1,0 +1,13 @@
+{
+    "nume": "Ceausescu",
+    "prenume": "Ana",
+    "cnp": "6050430460013",
+    "data_nasterii": "20 ani si 6 luni",
+    "email": "anacarina.ceausescu@gmail.com",
+    "tip_mesaj": "intrebare",
+    "subiect": "Vreau sa va pun o intrebare",
+    "minim_zile_asteptare": 3,
+    "mesaj": "Buna ziua! Aceasta este intrebarea mea. Carina Ceausescu",
+    "ip_utilizator": "127.0.0.1",
+    "data_ora_submit": "2025-11-19 17:13:12"
+}

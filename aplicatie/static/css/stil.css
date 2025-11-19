@@ -546,11 +546,19 @@ footer {
 }
 
 .titlu-contact {
-    display: flex;
-    justify-content: center; 
-    align-items: center;        
+    text-align: center;
+    margin: 20px auto;
+    padding: 10px 0;      
+}
+
+.titlu-contact h2 {
     font-size: 50px;
-    margin: 20px 0;       
+    margin-bottom: 10px;
+}
+
+.titlu-contact p {
+    font-size: 18px;
+    margin: 0;
 }
 
 

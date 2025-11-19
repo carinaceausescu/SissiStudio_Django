@@ -4,11 +4,12 @@
 {% block titlu %}Produse{% endblock %}
 
 {% block continut %}
-    <h2 class="titlu-contact">Contact </h2>
-
-    {% if success %}
-        <p>{{ success }}</p>
-    {% endif %}
+    <div class="titlu-contact">
+        <h2>Contact </h2>
+        {% if success %}
+            <p>{{ success }}</p>
+        {% endif %}
+    </div>
 
     <form method="post" class="generic-form">
             {% csrf_token %}

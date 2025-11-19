@@ -108,8 +108,8 @@ def validate_cnp(value):
         return
     if not re.fullmatch(r'\d{13}', value):
         raise ValidationError("CNP-ul trebuie sa contina exact 13 cifre.")
-    if value[0] not in ['1','2']:
-        raise ValidationError("CNP-ul trebuie sa inceapa cu 1 sau 2.")
+    if value[0] not in ['1','2','5','6']:
+        raise ValidationError("CNP-ul trebuie sa inceapa cu 1, 2, 5 sau 6.")
     yy = int(value[1:3])
     mm = int(value[3:5])
     dd = int(value[5:7])
@@ -140,7 +140,7 @@ class ContactForm(forms.Form):
     nume = forms.CharField(
         max_length=100, 
         required=True,
-        label="Nume",
+        label="Nume*",
         validators=[validate_capitalized_text, validate_name_words_capital],
     )
     prenume = forms.CharField(
@@ -159,35 +159,35 @@ class ContactForm(forms.Form):
     data_nasterii = forms.DateField(
         required=True,
         widget=forms.DateInput(attrs={'type': 'date'}),
-        label="Data nasterii",
+        label="Data nasterii*",
         validators=[validate_major],
     )
     email = forms.EmailField(
         required=True,
-        label="E-mail",
+        label="E-mail*",
         validators=[validate_email_domain],
     )
     email_confirmare = forms.EmailField(
         required=True,
-        label="Confirmare e-mail",
+        label="Confirmare e-mail*",
     )
     tip_mesaj = forms.ChoiceField(
         choices=TIP_MESAJ,
         required=True,
-        label="Tip mesaj",
+        label="Tip mesaj*",
         initial="",
     )
     subiect = forms.CharField(
         max_length=100,
         required=True,
-        label="Subiect",
+        label="Subiect*",
         validators=[validate_capitalized_text],
     )
     minim_zile_asteptare = forms.IntegerField(
         required=True,
         min_value=1,
         max_value=30,
-        label="Minim zile de asteptare",
+        label="Minim zile de asteptare (Pentru review-uri/cereri minimul de zile de asteptare trebuie setat de la 4 incolo iar pentru cereri/intrebari de la 2 incolo. Maximul e 30.)*",
     )
     mesaj = forms.CharField(
         widget=forms.Textarea,
@@ -200,14 +200,14 @@ class ContactForm(forms.Form):
 
         nume = cleaned.get("nume")
         email = cleaned.get("email")
-        email_conf = cleaned.get("email_confirmare")
+        email_confirmare = cleaned.get("email_confirmare")
         mesaj = cleaned.get("mesaj")
-        tip = cleaned.get("tip_mesaj")
-        zile = cleaned.get("minim_zile_asteptare")
+        tip_mesaj = cleaned.get("tip_mesaj")
+        minim_zile_asteptare = cleaned.get("minim_zile_asteptare")
         cnp = cleaned.get("cnp")
-        data_n = cleaned.get("data_nasterii")
+        data_nasterii = cleaned.get("data_nasterii")
 
-        if email and email_conf and email != email_conf:
+        if email and email_confirmare and email != email_confirmare:
             raise ValidationError("Emailul si confirmarea trebuie sa coincida.")
 
         if mesaj and nume:
@@ -216,7 +216,7 @@ class ContactForm(forms.Form):
                 raise ValidationError("Mesajul trebuie sa se incheie cu numele tau (semnatura).")
 
 
-        if cnp and len(cnp) == 13 and data_n:
+        if cnp and len(cnp) == 13 and data_nasterii:
             an = int(cnp[1:3])
             luna = int(cnp[3:5])
             zi = int(cnp[5:7])
@@ -227,27 +227,27 @@ class ContactForm(forms.Form):
             elif s in ["5", "6"]:
                 an += 2000
 
-            if date(an, luna, zi) != data_n:
+            if date(an, luna, zi) != data_nasterii:
                 raise ValidationError("CNP-ul nu corespunde cu data nasterii introdusa.")
 
-        if tip and zile is not None:
-            if tip in ["review", "cerere"] and zile < 4:
+        if tip_mesaj and minim_zile_asteptare is not None:
+            if tip_mesaj in ["review", "cerere"] and minim_zile_asteptare < 4:
                 self.add_error(
                     "minim_zile_asteptare",
                     "Pentru review-uri si cereri trebuie minim 4 zile."
                 )
 
-            if tip in ["cerere", "intrebare"] and zile < 2:
+            if tip_mesaj in ["cerere", "intrebare"] and minim_zile_asteptare < 2:
                 self.add_error(
                     "minim_zile_asteptare",
                     "Pentru cereri si intrebari trebuie minim 2 zile."
                 )
 
-        if data_n:
+        if data_nasterii:
             azi = date.today()
-            ani = azi.year - data_n.year
-            luni = azi.month - data_n.month
-            if azi.day < data_n.day:
+            ani = azi.year - data_nasterii.year
+            luni = azi.month - data_nasterii.month
+            if azi.day < data_nasterii.day:
                 luni -= 1
             if luni < 0:
                 ani -= 1
@@ -276,8 +276,8 @@ class ContactForm(forms.Form):
             cleaned["mesaj"] = mesaj
 
         urgent = False
-        if tip and zile is not None:
-            if (tip in ["review", "cerere"] and zile == 4) or (tip in ["cerere", "intrebare"] and zile == 2):
+        if tip_mesaj and minim_zile_asteptare is not None:
+            if (tip_mesaj in ["review", "cerere"] and minim_zile_asteptare == 4) or (tip_mesaj in ["cerere", "intrebare"] and minim_zile_asteptare == 2):
                 urgent = True
 
         cleaned["urgent"] = urgent

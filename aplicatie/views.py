@@ -414,13 +414,39 @@ def contact(request):
             cnp = form.cleaned_data["cnp"]
             data_nasterii = form.cleaned_data["data_nasterii"]
             email = form.cleaned_data["email"]
-            email_confirmare = form.cleaned_data["email_confirmare"]
             tip_mesaj = form.cleaned_data["tip_mesaj"]
             subiect = form.cleaned_data["subiect"]
-            minim_zile_astepatare = form.cleaned_data["minim_zile_asteptare"]
+            minim_zile_asteptare = form.cleaned_data["minim_zile_asteptare"]
             mesaj = form.cleaned_data["mesaj"]
             
-        
+            data_json = {
+                "nume": nume,
+                "prenume": prenume,
+                "cnp": cnp,
+                "data_nasterii": str(data_nasterii),
+                "email": email,
+                "tip_mesaj": tip_mesaj,
+                "subiect": subiect,
+                "minim_zile_asteptare": minim_zile_asteptare,
+                "mesaj": mesaj,
+            }
+            
+            timestamp = int(time.time())
+            data_json["ip_utilizator"]=get_ip(request)
+            data_json["data_ora_submit"]=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(timestamp))
+
+            urgent = (tip_mesaj == "urgent")
+            
+            filename = f"mesaj_{timestamp}"
+            if urgent:
+                filename += "_urgent"
+            filename += ".json"
+            
+            os.makedirs(os.path.join(settings.BASE_DIR, "mesaje"), exist_ok=True)
+            filepath = os.path.join(settings.BASE_DIR, "mesaje", filename)
+            with open(filepath, "w", encoding="utf-8") as f:
+                json.dump(data_json, f, ensure_ascii=False, indent=4)
+            
             return render(request, "aplicatie/contact.html", {
                 "form": ContactForm(),
                 "success": "Mesajul a fost trimis."
@@ -431,8 +457,7 @@ def contact(request):
             })
     else:
         form = ContactForm()
-
-    return render(request, "aplicatie/contact.html", {"form": form})
+        return render(request, "aplicatie/contact.html", {"form": form})
 
 
 def cos_virtual(request):
