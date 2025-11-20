@@ -1,0 +1,17 @@
+{% extends 'aplicatie/baza.html' %}
+{% load static %}
+
+{% block titlu %}Adauga Articol{% endblock %}
+
+{% block continut %}
+<section class="sectiune add-article">
+    <h2>Adauga articol nou</h2>
+    <p>Completeaza formularul si adauga un produs nou in Sissi Studio!</p>
+    <form class="generic-form" method="post" action="{% url 'adauga_articol' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Adauga Articol</button>
+    </form>
+
+</section>
+{% endblock %}

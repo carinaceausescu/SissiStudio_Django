@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from datetime import date
-from .models import Categorie, Marime, CustomUser
+from .models import Categorie, Marime, Articol, CustomUser
 from django.forms.widgets import CheckboxSelectMultiple
 import re
 
@@ -284,6 +284,64 @@ class ContactForm(forms.Form):
 
         return cleaned
 
+def validate_min_two_words(value):
+    if len(value.strip().split()) < 2:
+        raise ValidationError("Numele trebuie sa contina minim doua cuvinte.")
+
+class ArticolForm(forms.ModelForm):
+    cost_import = forms.DecimalField(
+        max_digits=8, 
+        decimal_places=2,
+        required=True,
+        label="Cost de cumparare import"
+    )
+    procent_adaugat = forms.IntegerField(
+        min_value=0,
+        max_value=100,
+        required=True,
+        label="Procent adaugat",
+        help_text="Procentul trebuie sa fie multiplu de 5."
+    )
+    class Meta:
+        model = Articol
+        fields = ["nume", "categorie", "imagine"]
+        labels = {
+            "nume": "Denumirea articolului",
+            "categorie": "Categoria",
+            "imagine": "Imaginea cu articolul"
+        }
+        help_texts = {
+            "imagine": "Incarca o poza clara cu articolul.",
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nume'].validators.extend([validate_capitalized_text, validate_min_two_words])
+    
+    def clean_nume(self):
+        nume = self.cleaned_data.get("nume")
+        if Articol.objects.filter(nume__iexact=nume).exists():
+            raise forms.ValidationError("Exista deja un articol vestimentar cu aceasta denumire.")
+        return nume
+    def clean_procent_adaugat(self):
+        procent = self.cleaned_data.get("procent_adaugat")
+        if procent % 5 != 0:
+            raise forms.ValidationError("Procentul adaugat trebuie sa fie multiplu de 5.")
+        return procent
+    def clean_cost_import(self):
+        cost = self.cleaned_data.get("cost_import")
+        if cost <= 0:
+            raise forms.ValidationError("Costul de cumparare trebuie sa fie strict pozitiv.")  
+        return cost
+    def clean(self):
+        cleaned_data = super().clean()
+        nume = cleaned_data.get("nume")
+        categorie = cleaned_data.get("categorie")
+        if nume and categorie:
+            first4nume = nume[:4].lower()
+            first4categorie = categorie.nume[:4].lower()
+            if first4nume != first4categorie:
+                raise forms.ValidationError("Articolul nu face parte din categoria aleasa.")
+        return cleaned_data
 
 class CustomUserCreationForm(UserCreationForm):
     telefon = forms.CharField(required=False)

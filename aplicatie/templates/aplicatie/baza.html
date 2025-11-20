@@ -37,16 +37,11 @@
                         {% endfor %}
                     </ul>
                 </li>
+                <li><a href="{% url 'adauga_articol' %}">ADAUGA ARTICOL</a></li>
                 <li><a href="{% url 'cos_virtual' %}">CART</a></li>
                 <li><a href="{% url 'contact' %}">CONTACT</a></li>
                 <li><a href="{% url 'log' %}">LOG</a></li>
                 <li><a href="{% url 'info' %}">INFO</a></li>
-                <!--{% if request.user.is_authenticated %}
-                    <li><a href="{% url 'profil' %}">PROFIL ({{ request.user.username }})</a></li>
-                    <li><a href="{% url 'logout' %}">DECONECTARE</a></li>
-                {% else %}
-                    
-                {% endif %} -->
             </ul>
         </nav>
     </header>

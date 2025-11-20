@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 import datetime
 from urllib.parse import urlparse
 from django.http import HttpResponse, JsonResponse
-from .forms import FilterFormArticole, ContactForm
+from .forms import FilterFormArticole, ContactForm, ArticolForm
 from .models import Articol, Categorie
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django import forms
@@ -11,6 +11,7 @@ import json
 import os
 import time
 from django.conf import settings
+from decimal import Decimal
 #from django.contrib.auth import authenticate, login
 #from .forms import LoginForm
 
@@ -459,6 +460,22 @@ def contact(request):
         form = ContactForm()
         return render(request, "aplicatie/contact.html", {"form": form})
 
+def adauga_articol(request):
+    if request.method == 'POST':
+        form = ArticolForm(request.POST, request.FILES)
+        if form.is_valid():
+            articol = form.save(commit=False)
+            cost_import = form.cleaned_data["cost_import"]
+            procent_adaugat = form.cleaned_data["procent_adaugat"]
+            pret_final = cost_import * Decimal((1 + procent_adaugat/100))
+            
+            articol.pret = pret_final
+            articol.save()
+            form.save_m2m()  
+            return redirect('produse')
+    else:
+        form = ArticolForm()
+    return render(request, 'aplicatie/adauga_articol.html', {'form': form})
 
 def cos_virtual(request):
     return render(request, 'aplicatie/cos_virtual.html')
