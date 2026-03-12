@@ -18,6 +18,7 @@ Sissi Studio este un site de tip magazin online construit cu Django și PostgreS
 - Admin panel pentru gestiune categorii și produse
 
 ## Demo Video
+<img src="assets/prezentare_site_SissiStudio.gif" width="900">
 
 ![Demo](prezentare_site_SissiStudio.gif)
 
